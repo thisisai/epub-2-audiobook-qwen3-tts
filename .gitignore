@@ -2,6 +2,7 @@
 models/
 
 # Virtual environment
+venv/
 .venv/
 
 # Temp files
@@ -13,6 +14,14 @@ voices/*
 !voices/.gitkeep
 outputs/*
 !outputs/.gitkeep
+chapters/*
+!chapters/.gitkeep
+
+# EPUB files (user data)
+*.epub
+
+# Local settings
+.claude/settings.local.json
 
 # System files
 .DS_Store
