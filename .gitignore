@@ -20,9 +20,6 @@ chapters/*
 # EPUB files (user data)
 *.epub
 
-# Local settings
-.claude/settings.local.json
-
 # System files
 .DS_Store
 __pycache__/

@@ -14,7 +14,7 @@ PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$PROJECT_DIR"
 
 # ── 1. 檢查系統 ──────────────────────────
-echo "【1/6】檢查系統環境..."
+echo "【1/5】檢查系統環境..."
 
 # 檢查 Apple Silicon
 if [[ "$(uname -m)" != "arm64" ]]; then
@@ -32,7 +32,7 @@ echo "  ✓ Homebrew"
 
 # ── 2. 安裝系統依賴 ──────────────────────
 echo ""
-echo "【2/6】安裝系統依賴..."
+echo "【2/5】安裝系統依賴..."
 
 # Python 3.13
 if ! command -v python3.13 &>/dev/null; then
@@ -52,7 +52,7 @@ fi
 
 # ── 3. 建立虛擬環境 ──────────────────────
 echo ""
-echo "【3/6】建立 Python 虛擬環境..."
+echo "【3/5】建立 Python 虛擬環境..."
 
 if [ -d "venv" ]; then
     # 檢查 venv 的 Python 版本
@@ -72,7 +72,7 @@ fi
 
 # ── 4. 安裝 Python 依賴 ──────────────────
 echo ""
-echo "【4/6】安裝 Python 套件（可能需要幾分鐘）..."
+echo "【4/5】安裝 Python 套件（可能需要幾分鐘）..."
 
 "$PROJECT_DIR/venv/bin/pip" install --upgrade pip --quiet
 "$PROJECT_DIR/venv/bin/pip" install -r requirements.txt --quiet
@@ -80,7 +80,7 @@ echo "  ✓ 所有套件已安裝"
 
 # ── 5. 修復 Tokenizer 警告 ───────────────
 echo ""
-echo "【5/6】套用 Tokenizer 警告修復..."
+echo "【5/5】套用 Tokenizer 警告修復..."
 
 # 找到 qwen3_tts.py 的位置
 QWEN3_TTS_PY=$(find "$PROJECT_DIR/venv" -path "*/mlx_audio/tts/models/qwen3_tts/qwen3_tts.py" 2>/dev/null | head -1)
@@ -146,7 +146,7 @@ fi
 
 # ── 6. 下載模型 ──────────────────────────
 echo ""
-echo "【6/6】檢查模型..."
+echo "【下載模型】檢查模型..."
 
 mkdir -p models
 
@@ -185,35 +185,6 @@ else
     echo "  跳過模型下載（稍後可重新執行此腳本）"
 fi
 
-# ── 7. 更新 Skill 路徑 ───────────────────
-echo ""
-echo "更新 Claude Code Skill 路徑..."
-
-SKILL_FILE="$PROJECT_DIR/.claude/skills/qwen3-tts/SKILL.md"
-if [ -f "$SKILL_FILE" ]; then
-    # 使用 Python 精確替換 SKILL.md 中所有絕對路徑
-    "$PROJECT_DIR/venv/bin/python" -c "
-import re
-
-with open('$SKILL_FILE', 'r') as f:
-    content = f.read()
-
-# 匹配任何形如 /some/path/.../tts-cli.py 或 /some/path/.../venv/bin/python 的路徑
-# 替換為當前 PROJECT_DIR
-content = re.sub(
-    r'/[^\s\"]*?/venv/bin/python\s+/[^\s\"]*?/tts-cli\.py',
-    '$PROJECT_DIR/venv/bin/python $PROJECT_DIR/tts-cli.py',
-    content
-)
-
-with open('$SKILL_FILE', 'w') as f:
-    f.write(content)
-print('  ✓ Skill 路徑已更新為: $PROJECT_DIR')
-"
-else
-    echo "  ⚠ 找不到 SKILL.md"
-fi
-
 # ── 完成 ─────────────────────────────────
 echo ""
 echo "========================================="
@@ -228,9 +199,6 @@ echo "    python main.py"
 echo ""
 echo "  CLI 模式："
 echo "    $PROJECT_DIR/venv/bin/python $PROJECT_DIR/tts-cli.py \"你好世界\""
-echo ""
-echo "  Claude Code Skill："
-echo "    在 Claude Code 中輸入 /qwen3-tts \"你好\""
 echo ""
 
 # 快速驗證

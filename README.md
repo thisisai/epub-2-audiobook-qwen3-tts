@@ -48,7 +48,7 @@
 bash setup.sh
 ```
 
-會自動完成：安裝 Python 3.13、FFmpeg、建立虛擬環境、安裝依賴、修復警告、下載模型、更新 Skill 路徑。
+會自動完成：安裝 Python 3.13、FFmpeg、建立虛擬環境、安裝依賴、修復警告、下載模型。
 
 ### 方式二：手動安裝
 
@@ -265,7 +265,7 @@ python main.py
 ```
 epub-2-audiobook-qwen3-tts/
 ├── main.py              # 主程式（互動選單）
-├── tts-cli.py           # CLI 工具（供腳本/Skill 呼叫）
+├── tts-cli.py           # CLI 工具（供腳本呼叫）
 ├── epub_to_chapters.py  # EPUB 轉章節工具（epub → 多個章節 txt）
 ├── setup.sh             # 一鍵安裝腳本
 ├── requirements.txt     # Python 依賴
@@ -276,7 +276,6 @@ epub-2-audiobook-qwen3-tts/
 │   ├── VoiceDesign/
 │   └── Clones/
 ├── chapters/            # epub_to_chapters.py 預設輸出目錄
-├── .claude/skills/      # Claude Code Skill 定義
 └── venv/                # Python 虛擬環境
 ```
 
@@ -332,7 +331,6 @@ bash setup.sh
 - 建立虛擬環境並安裝所有依賴
 - 修復 tokenizer 警告
 - 偵測已存在的模型（跳過下載）
-- 更新 Claude Code Skill 路徑
 
 > **注意**：`venv/` 資料夾不需要複製，腳本會自動重建。如果不想複製 8.7GB 的模型，朋友也可以自行下載（腳本會提示）。
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Qwen3-TTS CLI — Non-interactive wrapper for skill/agent integration.
+Qwen3-TTS CLI — Non-interactive command-line wrapper.
 
 Usage:
     python tts-cli.py "要說的文字"

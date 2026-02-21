@@ -48,7 +48,7 @@ Run **Qwen3-TTS** text-to-speech models locally on Apple Silicon Macs (M1/M2/M3/
 bash setup.sh
 ```
 
-This automatically: installs Python 3.13, FFmpeg, creates a virtual environment, installs dependencies, patches warnings, downloads models, and updates Skill paths.
+This automatically: installs Python 3.13, FFmpeg, creates a virtual environment, installs dependencies, patches warnings, and downloads models.
 
 ### Option 2: Manual Install
 
@@ -225,7 +225,7 @@ python main.py
 ```
 epub-2-audiobook-qwen3-tts/
 ├── main.py              # Main program (interactive menu)
-├── tts-cli.py           # CLI tool (for scripts/Skill integration)
+├── tts-cli.py           # CLI tool (for script integration)
 ├── epub_to_chapters.py  # EPUB to chapters tool (epub → chapter txt files)
 ├── setup.sh             # One-click install script
 ├── requirements.txt     # Python dependencies
@@ -236,7 +236,6 @@ epub-2-audiobook-qwen3-tts/
 │   ├── VoiceDesign/
 │   └── Clones/
 ├── chapters/            # epub_to_chapters.py default output directory
-├── .claude/skills/      # Claude Code Skill definitions
 └── venv/                # Python virtual environment
 ```
 
@@ -292,7 +291,6 @@ The setup script will automatically:
 - Create virtual environment and install dependencies
 - Patch tokenizer warnings
 - Detect existing models (skip download)
-- Update Claude Code Skill paths
 
 > **Note**: The `venv/` folder does not need to be copied — the script rebuilds it. If you don't want to copy 8.7GB of models, your friend can download them separately (the script will prompt).
 
