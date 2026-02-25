@@ -617,20 +617,53 @@ def run_batch_session():
     print("\n選擇模型：")
     print("  1. Pro 自訂語音（1.7B，預設）")
     print("  2. Pro 語音設計（1.7B）")
+    print("  3. Pro 語音複製（1.7B，使用自製聲音）")
     print("  4. Lite 自訂語音（0.6B，較快）")
     print("  5. Lite 語音設計（0.6B，較快）")
+    print("  6. Lite 語音複製（0.6B，使用自製聲音）")
     model_choice = input("選擇（直接 Enter = 1）：").strip() or "1"
 
-    if model_choice not in MODELS or MODELS[model_choice]["mode"] == "clone_manager":
-        print("批次模式不支援語音複製，使用 Pro 自訂語音。")
+    if model_choice not in MODELS:
+        print("選擇無效，使用 Pro 自訂語音。")
         model_choice = "1"
 
     info = MODELS[model_choice]
     is_custom = info["mode"] == "custom"
+    is_clone = info["mode"] == "clone_manager"
 
-    # 3. 選語音（僅 custom 模式）
+    # 3. 選語音
     speaker = "Vivian"
-    if is_custom:
+    ref_audio = None
+    ref_text = None
+
+    if is_clone:
+        saved = get_saved_voices()
+        if not saved:
+            print("尚無已儲存的自製語音。請先到主選單的語音複製功能登錄語音。")
+            return
+        print("\n已儲存的自製語音：")
+        for i, v in enumerate(saved):
+            print(f"  {i+1}. {v}")
+        user_choice = input("\n選擇語音編號：").strip()
+        try:
+            idx = int(user_choice) - 1
+            if idx < 0 or idx >= len(saved):
+                print("選擇無效。")
+                return
+            name = saved[idx]
+            ref_audio = os.path.join(VOICES_DIR, f"{name}.wav")
+            txt_path = os.path.join(VOICES_DIR, f"{name}.txt")
+            if os.path.exists(txt_path):
+                with open(txt_path, 'r', encoding='utf-8') as f:
+                    ref_text = f.read().strip()
+            else:
+                ref_text = "."
+            speaker = name
+            print(f"已選擇：{name}")
+        except (ValueError, IndexError):
+            print("選擇無效。")
+            return
+    elif is_custom:
         print("\n可用語音：")
         idx = 1
         speaker_list = []
@@ -652,7 +685,10 @@ def run_batch_session():
                     break
 
     # 4. 情緒
-    if is_custom:
+    instruct = None
+    if is_clone:
+        pass  # 語音複製不需要情緒指令
+    elif is_custom:
         print("\n情緒範例：")
         for ex in EMOTION_EXAMPLES:
             print(f"  - {ex}")
@@ -671,9 +707,10 @@ def run_batch_session():
     print(f"\n{'=' * 40}")
     print(f"  檔案數：{len(txt_files)}")
     print(f"  模型  ：{info['name']}")
-    if is_custom:
+    if is_custom or is_clone:
         print(f"  語音  ：{speaker}")
-    print(f"  情緒  ：{instruct}")
+    if instruct:
+        print(f"  情緒  ：{instruct}")
     print(f"  語速  ：{speed}x")
     print(f"  輸出  ：.mp3（192kbps）")
     print(f"{'=' * 40}")
@@ -725,7 +762,9 @@ def run_batch_session():
         print(f"  [{i}/{total}] {txt_file}（{len(text)} 字）")
 
         try:
-            if is_custom:
+            if is_clone:
+                gen_kwargs = {"ref_audio": ref_audio, "ref_text": ref_text}
+            elif is_custom:
                 gen_kwargs = {"voice": speaker, "instruct": instruct, "speed": speed}
             else:
                 gen_kwargs = {"instruct": instruct}
