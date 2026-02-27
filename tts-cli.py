@@ -93,12 +93,14 @@ def generate(text, voice, model_key, emotion, speed, no_play, ref_audio=None, re
             generate_audio(
                 model=model, text=text, voice=voice,
                 instruct=emotion, speed=speed,
+                lang_code="chinese",
                 output_path=str(temp_dir),
             )
         elif info["mode"] == "design":
             generate_audio(
                 model=model, text=text,
                 instruct=emotion,
+                lang_code="chinese",
                 output_path=str(temp_dir),
             )
         elif info["mode"] == "clone":
@@ -107,6 +109,7 @@ def generate(text, voice, model_key, emotion, speed, no_play, ref_audio=None, re
             generate_audio(
                 model=model, text=text,
                 ref_audio=ref_audio, ref_text=ref_text or ".",
+                lang_code="chinese",
                 output_path=str(temp_dir),
             )
 

@@ -464,7 +464,7 @@ def run_custom_session(model_key):
             generate_long_audio(
                 model=model, text=text,
                 subfolder=info["output_subfolder"], text_label=text,
-                gen_kwargs={"voice": speaker, "instruct": base_instruct, "speed": speed},
+                gen_kwargs={"voice": speaker, "instruct": base_instruct, "speed": speed, "lang_code": "chinese"},
             )
         except Exception as e:
             print(f"錯誤：{e}")
@@ -503,7 +503,7 @@ def run_design_session(model_key):
             generate_long_audio(
                 model=model, text=text,
                 subfolder=info["output_subfolder"], text_label=text,
-                gen_kwargs={"instruct": instruct},
+                gen_kwargs={"instruct": instruct, "lang_code": "chinese"},
             )
         except Exception as e:
             print(f"錯誤：{e}")
@@ -574,6 +574,8 @@ def run_clone_manager(model_key):
     else:
         return
 
+    speed = ask_speed()
+
     while True:
         text = get_safe_input(f"\n輸入要用 '{os.path.basename(str(ref_audio))}' 語音說的文字（輸入 exit 離開）：")
         if text is None:
@@ -583,7 +585,7 @@ def run_clone_manager(model_key):
             generate_long_audio(
                 model=model, text=text,
                 subfolder=info["output_subfolder"], text_label=text,
-                gen_kwargs={"ref_audio": ref_audio, "ref_text": ref_text},
+                gen_kwargs={"ref_audio": ref_audio, "ref_text": ref_text, "speed": speed, "lang_code": "chinese"},
             )
         except Exception as e:
             print(f"錯誤：{e}")
@@ -763,11 +765,11 @@ def run_batch_session():
 
         try:
             if is_clone:
-                gen_kwargs = {"ref_audio": ref_audio, "ref_text": ref_text}
+                gen_kwargs = {"ref_audio": ref_audio, "ref_text": ref_text, "lang_code": "chinese"}
             elif is_custom:
-                gen_kwargs = {"voice": speaker, "instruct": instruct, "speed": speed}
+                gen_kwargs = {"voice": speaker, "instruct": instruct, "speed": speed, "lang_code": "chinese"}
             else:
-                gen_kwargs = {"instruct": instruct}
+                gen_kwargs = {"instruct": instruct, "lang_code": "chinese"}
 
             # 使用分段生成（自動處理長文本）
             chunks = split_text(text)
