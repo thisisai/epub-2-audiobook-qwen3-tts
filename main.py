@@ -844,6 +844,13 @@ def run_batch_session():
     clean_memory()
 
 
+def model_label(key):
+    """回傳模型名稱，若未下載則加上標注"""
+    info = MODELS[key]
+    tag = "" if get_smart_path(info["folder"]) else "（未下載）"
+    return f"{info['name']}{tag}"
+
+
 def main_menu():
     print("\n" + "=" * 40)
     print(" Qwen3-TTS 語音合成管理器")
@@ -851,15 +858,15 @@ def main_menu():
 
     print("\n  Pro 模型（1.7B - 最佳品質）")
     print("  ---------------------------------")
-    print("  1. 自訂語音")
-    print("  2. 語音設計")
-    print("  3. 語音複製")
+    print(f"  1. {model_label('1')}")
+    print(f"  2. {model_label('2')}")
+    print(f"  3. {model_label('3')}")
 
     print("\n  Lite 模型（0.6B - 較快速）")
     print("  ---------------------------")
-    print("  4. 自訂語音")
-    print("  5. 語音設計")
-    print("  6. 語音複製")
+    print(f"  4. {model_label('4')}")
+    print(f"  5. {model_label('5')}")
+    print(f"  6. {model_label('6')}")
 
     print("\n  7. 批次轉換（整個資料夾 .txt → .mp3）")
 

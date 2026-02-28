@@ -12,12 +12,13 @@ Run **Qwen3-TTS** text-to-speech models locally on Apple Silicon Macs (M1/M2/M3/
 
 - **Custom Voice** — 14 built-in voices (Chinese/English/Japanese/Korean) with emotion and speed control
 - **Voice Design** — Describe your desired voice style in natural language (e.g. "young female, soft and gentle tone")
-- **Voice Cloning** — Clone any voice with just a 5-second audio sample
+- **Voice Cloning** — Clone any voice with just a 5-second audio sample, with speed control
 - **Auto-Chunking** — Automatically splits long text, generates segments, and merges them, bypassing the ~1.5 min single-pass limit
 - **Batch Conversion** — Convert an entire folder of `.txt` files to `.mp3` in one go
 - **MP3 Output** — All audio saved as 192kbps MP3
 - **Fully Offline** — No internet needed, all inference runs locally
 - **Apple Silicon Optimized** — Uses the MLX framework for low memory usage and low temperatures
+- **Model Status Indicator** — Main menu auto-detects and labels models that haven't been downloaded
 
 ---
 
@@ -162,8 +163,10 @@ Describe your desired voice style in natural language:
 ### Mode 3: Voice Cloning
 
 Provide a 5-10 second reference audio to clone a voice. Supports:
-- **Quick Clone** — Drag in an audio file directly
-- **Register Voice** — Save a voice for repeated use
+- **Select Saved Voice** — Use a previously registered voice
+- **Register New Voice** — Save voice name, audio, and transcript for repeated use
+- **Quick Clone** — Drag in an audio file for one-time use
+- Speed control (normal / fast / slow / custom multiplier)
 - Supports WAV, MP3 formats (non-WAV auto-converted via FFmpeg)
 
 ### Mode 7: Batch Conversion
